@@ -1,6 +1,8 @@
 const express = require('express');
 const  mongoose  = require('mongoose');
 require('dotenv').config();
+const user = require('./api/models/userModel');
+
 
 dbPassword =  process.env.dbPassword
 
@@ -12,6 +14,8 @@ mongoose.connect(`mongodb+srv://ines:${dbPassword}@cluster1.lnkpo.mongodb.net/?r
      }).catch((error) =>{
           console.log(error);
      })
+
+
 
 
 

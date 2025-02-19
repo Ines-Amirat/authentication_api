@@ -8,17 +8,25 @@ const userSchema = new Schema({
         },
         email : {
             type : String,
-            require : true
+            require : true,
+            unique : true
         },
         password : {
             type : String,
-            require : true
+            require : true,
+            minlength: [6,'Too short password']
         },
         phoneNumber :{
             type : String,
             require : true
         },
-        country: String,
+        role:{
+            type : String,
+            enum : ['user' , 'admin'],
+            default: 'user'
+        },
+        profileImg: String
+        
 });
 
 const user = mongoose.model('user', userSchema);
