@@ -1,21 +1,20 @@
 const express = require('express');
-const  mongoose  = require('mongoose');
-require('dotenv').config();
-const user = require('./api/models/userModel');
-
-
-dbPassword =  process.env.dbPassword
-
+//charger les var d'environnement
+const connexionDB = require('./config/db')
 const app = express();
-
-mongoose.connect(`mongodb+srv://ines:${dbPassword}@cluster1.lnkpo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1"`)
-     .then(() =>{
-          console.log("connected successfully");
-     }).catch((error) =>{
-          console.log(error);
-     })
+const router = require('./api/routes/root');
 
 
+
+connexionDB();
+
+
+app.use('/', router);
+app.use('*',(req,res) =>{
+    //const error = new Error();
+    res.status(404).json({message :'404  Not Found '})
+    
+});
 
 
 

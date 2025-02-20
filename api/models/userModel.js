@@ -4,31 +4,33 @@ const Schema = mongoose.Schema;
 const userSchema = new Schema({
         name: {
             type : String,
-            require : true
+            required : true
         },
         email : {
             type : String,
-            require : true,
+            required : true,
             unique : true
         },
         password : {
             type : String,
-            require : true,
+            required : true,
             minlength: [6,'Too short password']
         },
         phoneNumber :{
             type : String,
-            require : true
+            required : true
         },
         role:{
             type : String,
             enum : ['user' , 'admin'],
             default: 'user'
         },
-        profileImg: String
+        profileImg:{
+             type : String
+        }
         
-});
+},{timestamps : true});
 
-const user = mongoose.model('user', userSchema);
+const user =  mongoose.model('user', userSchema);
 module.export = user; 
 
