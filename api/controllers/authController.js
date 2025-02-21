@@ -1,6 +1,12 @@
 
 const User = require('../models/userModel');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+require('dotenv').config({ path : '../config/.env'});
+const PORT = process.env.PORT || 8000;
+const TOKEN_KEY_SECRET = process.env.TOKEN_KEY_SECRET;
+
+
 
 
 const register = async (req, res) => {
@@ -19,7 +25,7 @@ const register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(body.password, 10);
 
         //user.create({})  applied on a model 
-        user = new User({
+            user = new User({
             name: body.name,
             email: body.email,
             password: hashedPassword,
@@ -38,14 +44,35 @@ const register = async (req, res) => {
     }
 }
 
-
-
+const login = async (req, res) => {
+    let = body = req.body;
+    if (!body.email || !body.password ) {
+        return res.status(400).json({ message: "All fields are required" });
+    }
+    let user = await User.findOne({email: body.email });
+    if(!user){
+        return res.status(401).json({ message: "User not Found !" });
+    }
+    let passwordLogin = body.password.trim();
+    let compare = await bcrypt.compare(passwordLogin ,user.password);
+    if (!compare){
+        return res.status(401).json({ message: "Password not correct !" });
+    }
+    const token = jwt.sign({
+        // Payload
+        userId : user._id
+    },TOKEN_KEY_SECRET,{
+        expiresIn : 10
+    });
+  
+   
+}
 
 
 
 module.exports = {
         register,
-      
+        login
 }; 
 
 
